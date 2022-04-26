@@ -140,7 +140,7 @@ class Token:
             self.pos_end = pos_end
         
     def matches(self, type_, value):
-        return self.type == type_ and self.value == value
+        return self.type == type_ and self.value.lower() == value.lower()
     
     def __repr__(self):
         if self.value: return f'{self.type}:{self.value}'
@@ -239,7 +239,7 @@ class Lexer:
             id_str += self.current_char
             self.advance()
         
-        tok_type = TT_KEYWORD if id_str in KEYWORDS else TT_IDENTIFIER
+        tok_type = TT_KEYWORD if id_str.casefold() in map(str.casefold, KEYWORDS) else TT_IDENTIFIER
         return Token(tok_type, id_str, pos_start, self.pos)
     
     def make_not_equals(self):
@@ -572,7 +572,7 @@ class Parser:
             if res.error: return res
             return res.success(VarAssignNode(var_name, expr))
 
-        node = res.register(self.bin_op(self.comp_expr, ((TT_KEYWORD, "AND"), (TT_KEYWORD, "OR"))))
+        node = res.register(self.bin_op(self.comp_expr, ((TT_KEYWORD, "AND"), (TT_KEYWORD, "OR"), (TT_KEYWORD, "and"), (TT_KEYWORD, "or"))))
 
         if res.error:
             return res.failure(InvalidSyntaxError(
@@ -835,10 +835,10 @@ class Interpreter:
         number = res.register(self.visit(node.node, context))
         if res.error: return res
 
-        number = None
+        error = None
 
         if node.op_tok.type == TT_MINUS:
-            number = number.multed_by(Number(-1))
+            number, error = number.multed_by(Number(-1))
         elif node.op_tok.matches(TT_KEYWORD, 'NOT'):
             number, error = number.notted()
 
