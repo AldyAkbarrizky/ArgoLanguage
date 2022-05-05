@@ -1642,6 +1642,12 @@ class BuiltInModule(BaseModule):
         return RTResult().success(Number.null)
     execute_clear.arg_names = []
 
+    def execute_quit(self, exec_ctx):
+        print("Terima kasih sudah menggunakan Bahasa Pemrograman Argo!")
+        quit()
+        return RTResult().success(Number.null)
+    execute_quit.arg_names = []
+
     def execute_is_number(self, exec_ctx):
         is_number = isinstance(exec_ctx.symbol_table.get("value"), Number)
         return RTResult().success(Number.true if is_number else Number.false)
@@ -1733,6 +1739,7 @@ BuiltInModule.print_ret = BuiltInModule("print_ret")
 BuiltInModule.input     = BuiltInModule("input")
 BuiltInModule.input_int = BuiltInModule("input_int")
 BuiltInModule.clear     = BuiltInModule("clear")
+BuiltInModule.quit      = BuiltInModule("quit")
 BuiltInModule.is_number = BuiltInModule("is_number")
 BuiltInModule.is_string = BuiltInModule("is_string")
 BuiltInModule.is_list   = BuiltInModule("is_list")
@@ -2011,6 +2018,7 @@ global_symbol_table.set("print_ret", BuiltInModule.print_ret)
 global_symbol_table.set("input", BuiltInModule.input)
 global_symbol_table.set("input_int", BuiltInModule.input_int)
 global_symbol_table.set("clear", BuiltInModule.clear)
+global_symbol_table.set("quit", BuiltInModule.quit)
 global_symbol_table.set("is_number", BuiltInModule.is_number)
 global_symbol_table.set("is_string", BuiltInModule.is_string)
 global_symbol_table.set("is_list", BuiltInModule.is_list)
