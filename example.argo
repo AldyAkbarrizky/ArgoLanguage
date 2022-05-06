@@ -1,5 +1,62 @@
 # Ini adalah komentar
 
+######################################
+# Contoh untuk for statement
+######################################
+module for_ex()
+    var x = 0
+    for x = 0 to 10 then
+        print(x)
+    end
+end
+
+module for_ex_2()
+    var x = 0
+    for x = 0 to 10 step 2 then
+        print(x)
+    end
+end
+
+module for_ex_3()
+    var x = 0
+    for x = 0 to 10 then
+        if x == 4 then
+            continue
+        end
+        if x == 8 then
+            break
+        end
+        print(x)
+    end
+end
+
+######################################
+# Contoh untuk if statement
+######################################
+module hujan(a)
+    if a == 0 then
+        print("Aman cerah")
+    elif a == 1 then
+        print("Waduch mendung")
+    else
+        print("Damn hujan")
+    end
+end
+
+######################################
+# Contoh untuk while statement
+######################################
+module print10()
+    var i = 1
+    while i <= 10 then
+        print(i)
+        var i = i + 1
+    end
+end
+
+######################################
+# Contoh module sederhana
+######################################
 module tambah(angka1, angka2)
     var hasil = angka1 + angka2
     return hasil
@@ -24,5 +81,24 @@ print("Ini adalah bahasa pemrograman argo!")
 var angka1 = 3
 var angka2 = 4
 var hasil_operasi = tambah(angka1, angka2)
+
 print("Hasil operasi: ")
 print(hasil_operasi)
+print("")
+
+print("Contoh while loop")
+print10()
+print("")
+
+print("Contoh if statement")
+hujan(0)
+hujan(1)
+hujan(2)
+print("")
+
+print("Contoh for statement")
+for_ex()
+print("-----------------------------")
+for_ex_2()
+print("-----------------------------")
+for_ex_3()
