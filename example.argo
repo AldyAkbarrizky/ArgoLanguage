@@ -1,1 +1,28 @@
-# This is comment
+# Ini adalah komentar
+
+module tambah(angka1, angka2)
+    var hasil = angka1 + angka2
+    return hasil
+end
+
+module kurang(angka1, angka2)
+    var hasil = angka1 - angka2
+    return hasil
+end
+
+module bagi(angka1, angka2)
+    var hasil = angka1 / angka2
+    return hasil
+end
+
+module kali(angka1, angka2)
+    var hasil = angka1 * angka2
+    return hasil
+end
+
+print("Ini adalah bahasa pemrograman argo!")
+var angka1 = 3
+var angka2 = 4
+var hasil_operasi = tambah(angka1, angka2)
+print("Hasil operasi: ")
+print(hasil_operasi)
