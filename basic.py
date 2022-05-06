@@ -362,6 +362,7 @@ class Lexer:
         
         self.advance()
 
+
 #######################################
 # NODES
 #######################################
@@ -2208,7 +2209,7 @@ global_symbol_table.set("extend", BuiltInModule.extend)
 global_symbol_table.set("len", BuiltInModule.len)
 global_symbol_table.set("run", BuiltInModule.run)
 
-def run(fn, text):
+def run_shell(fn, text):
     # Generate tokens
     lexer = Lexer(fn, text)
     tokens, error = lexer.make_tokens()
@@ -2227,3 +2228,14 @@ def run(fn, text):
 
     return result.value, result.error
 
+def run_file(fn):
+    try:
+        with open(fn, "r") as f:
+            script = f.read()
+    except Exception as e:
+        print(e)
+        
+    _, error = run_shell(fn, script)
+
+    if error:
+        print(error.as_string())
