@@ -185,6 +185,8 @@ class Lexer:
         while self.current_char != None:
             if self.current_char in ' \t':
                 self.advance()
+            elif self.current_char == '#':
+                self.skip_comment()
             elif self.current_char in ';\n':
                 tokens.append(Token(TT_NEWLINE, pos_start=self.pos))
                 self.advance()
@@ -351,6 +353,14 @@ class Lexer:
             escape_character = False
         self.advance()
         return Token(TT_STRING, string, pos_start, self.pos)
+    
+    def skip_comment(self):
+        self.advance()
+
+        while self.current_char != '\n':
+            self.advance()
+        
+        self.advance()
 
 #######################################
 # NODES
@@ -1820,6 +1830,54 @@ class BuiltInModule(BaseModule):
         return RTResult().success(Number.null)
     execute_extend.arg_names = ["listA", "listB"]
 
+    def execute_len(self, exec_ctx):
+        list_ = exec_ctx.symbol_table.get("list")
+
+        if not isinstance(list_, List):
+            return RTResult().failure(RTError(
+                self.pos_start, self.pos_end,
+                "Argument must be list",
+                exec_ctx
+            ))
+        
+        return RTResult().success(Number(len(list_.elements)))
+    execute_len.arg_names = ["list"]
+
+    def execute_run(self, exec_ctx):
+        fn = exec_ctx.symbol_table.get("fn")
+
+        if not isinstance(fn, String):
+            return RTResult().failure(RTError(
+                self.pos_start, self.pos_end,
+                "Argument must be string (file to run)",
+                exec_ctx
+            ))
+        
+        fn = fn.value
+
+        try:
+            with open(fn, "r") as f:
+                script = f.read()
+        except Exception as e:
+            return RTResult().failure(RTError(
+                self.pos_start, self.pos_end,
+                f"Failed to load script \"{fn}\"\n" + str(e),
+                exec_ctx
+            ))
+        
+        _, error = run(fn, script)
+
+        if error:
+            return RTResult().failure(RTError(
+                self.pos_start, self.pos_end,
+                f"Failed to finish executing script \"{fn}\"\n" +
+                error.as_string(),
+                exec_ctx
+            ))
+        
+        return RTResult().success(Number.null)
+    execute_run.arg_names = ["fn"]    
+
 BuiltInModule.print     = BuiltInModule("print")
 BuiltInModule.print_ret = BuiltInModule("print_ret")
 BuiltInModule.input     = BuiltInModule("input")
@@ -1833,6 +1891,8 @@ BuiltInModule.is_module = BuiltInModule("is_module")
 BuiltInModule.append    = BuiltInModule("append")
 BuiltInModule.pop       = BuiltInModule("pop")
 BuiltInModule.extend    = BuiltInModule("extend")
+BuiltInModule.len       = BuiltInModule("len")
+BuiltInModule.run       = BuiltInModule("run")
 
 #######################################
 # CONTEXT
@@ -2145,6 +2205,8 @@ global_symbol_table.set("is_module", BuiltInModule.is_module)
 global_symbol_table.set("append", BuiltInModule.append)
 global_symbol_table.set("pop", BuiltInModule.pop)
 global_symbol_table.set("extend", BuiltInModule.extend)
+global_symbol_table.set("len", BuiltInModule.len)
+global_symbol_table.set("run", BuiltInModule.run)
 
 def run(fn, text):
     # Generate tokens
