@@ -2,7 +2,7 @@ import basic
 import sys
 
 try:
-    file_name = sys.argv[1]
+    file_name = sys.argv[1] 
 except IndexError:
     file_name = ""
 

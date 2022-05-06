@@ -641,7 +641,7 @@ class Parser:
             return res.success(BreakNode(pos_start, self.current_tok.pos_start.copy()))
         
         expr = res.register(self.expr())
-        if res.error:
+        if res.error: 
             return res.failure(InvalidSyntaxError(
                 self.current_tok.pos_start, self.current_tok.pos_end,
                 "Expected 'RETURN', 'CONTINUE', 'BREAK', 'VAR', 'IF', 'FOR', 'WHILE', 'MODULE', int, float, identifier, '+', '-', '(', '[', or 'NOT'"
