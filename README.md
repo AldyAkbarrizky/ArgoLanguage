@@ -19,7 +19,11 @@ Karena bahasa ini ditulis menggunakan bahasa python versi 3, pastikan sudah teri
    ```
    git clone https://github.com/AldyAkbarrizky/ArgoLanguage.git
    ```
-2. Untuk menjalankan shell, buka cmd kemudian ketikkan
+2. Masuk ke dalam folder hasil clone
+   ```
+   cd ArgoLanguage
+   ```
+3. Untuk menjalankan shell, buka cmd kemudian ketikkan
    ```
    argo
    ```
@@ -27,7 +31,7 @@ Karena bahasa ini ditulis menggunakan bahasa python versi 3, pastikan sudah teri
    ```
    python argo.py
    ```
-3. Untuk menjalankan script, buka cmd kemudian ketikkan
+4. Untuk menjalankan script, buka cmd kemudian ketikkan
    ```
    argo <script_name>.argo
    ```
